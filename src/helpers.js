@@ -1,20 +1,21 @@
 export const sanitizedFilename = fileName => {
   let newFileName = fileName
   // remove old file endings
-  newFileName = newFileName.replace(/\.(gif|png|jpg|jpeg|tif|tiff|psd)$/i, '')
+  newFileName = newFileName.replace(/\.[^/.]{2,4}$/, '')
   // according to the rokka team only point and slash are not allowed
   newFileName = newFileName.replace(/[.\\/]/g, '-')
   return newFileName
 }
 
 export const generalProps = {
-  alt: { type: String, default: '' },
-  title: { type: String, default: '' },
+  alt: { type: String, default: null },
+  title: { type: String, default: null },
   org: { type: String, default: '' },
   stack: { type: String, default: 'dynamic' },
   hash: { type: String, default: '' },
   format: { type: String, default: 'jpg' },
   filename: { type: String, default: 'image' },
+  srcAttr: { type: String, default: 'src' },
   operations: {
     type: Array,
     default: () => {
@@ -94,15 +95,15 @@ export const buildRokkaUrl = props => {
   const optionsStr = flattenObject({ options }).join('--')
 
   const url = [
-    `https://${org}.rokka.io/${stack}`,
+    `${org}.rokka.io/${stack}`,
     // operationsStr,
     variablesStr,
     optionsStr,
     hash,
     `${sanitizedFilename(filename)}.${format}`
-  ].join('/')
+  ].join('/').replace(/\/{2,}/g, '/')
 
-  return url
+  return 'https://' + url
 }
 
 // https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge

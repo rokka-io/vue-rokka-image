@@ -1,5 +1,10 @@
 <template>
-  <img :src="src" :alt="alt" :title="title" />
+  <img
+    :[srcAttr]="src"
+    :alt="alt"
+    :title="title"
+    :class="'rokka--attr-' + srcAttr"
+  />
 </template>
 
 <script>
@@ -60,7 +65,7 @@ export default {
 
       const url = buildRokkaUrl({
         ...this.$parent.$props,
-        ...this.$options.propsData,
+        ...this.$props,
         operations,
         variables,
         options
