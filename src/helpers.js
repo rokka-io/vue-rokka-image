@@ -16,8 +16,8 @@ export const generalProps = {
   format: { type: String, default: 'jpg' },
   filename: { type: String, default: 'image' },
   srcAttribute: { type: String, default: 'src' },
+  srcAdditionalAttribute: { type: String, default: null },
   srcsetAttribute: { type: String, default: 'srcset' },
-  srcAttributeAdditional: { type: String, default: null },
   operations: {
     type: Array,
     default: () => {
@@ -239,7 +239,7 @@ export const srcset = (item) => {
       options
     })
 
-    url = url + (postfix ? ' ' + postfix : '')
+    url = encodeURI(url)  + (postfix ? ' ' + postfix : '')
 
     srcset.push(url)
   }

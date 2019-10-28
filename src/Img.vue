@@ -1,8 +1,8 @@
 <template>
   <img
-    :[srcAttribute]="src"
-    :[srcsetAttribute]="srcset"
-    :[srcAttributeAdditional]="srcAttributeAdditional ? src: null"
+    :[srcAttribute]="rokkaSrc"
+    :[srcsetAttribute]="rokkaSrcset"
+    :[srcAdditionalAttribute]="srcAdditionalComputed"
     :alt="alt"
     :title="title"
     :class="'rokka--attr-' + srcAttribute"
@@ -33,13 +33,23 @@ export default {
         return []
       }
     },
+    srcAdditional: {
+      type: String,
+      default: null
+    }
   },
 
   computed: {
-    srcset() {
+    // returns srcAdditional if set, otherwise the link to the rokka URL
+    // Is useful, when you want to set "src" to a loading image, which then later gets replaced
+    // by a lazy loader and data-src(set)
+    srcAdditionalComputed() {
+      return  this.srcAdditionalAttribute ? (this.srcAdditional ? this.srcAdditional : this.rokkaSrc) : null;
+    },
+    rokkaSrcset() {
       return srcset(this)
     },
-    src() {
+    rokkaSrc() {
       const currentOperations = this.operations
       const currentOptions = this.options
       const currentVariables = this.variables
