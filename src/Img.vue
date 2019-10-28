@@ -44,6 +44,7 @@ export default {
         ? currentVariables[0]
         : currentVariables
 
+      let currentProps = this.$props
       if (this.$parent.$options._componentTag === 'rokka-picture') {
         // get the parent props
         // depending if passed a obj or an array
@@ -62,11 +63,13 @@ export default {
         operations = mergeArraysDeep(pOperations, operations)
         variables = mergeDeep(pVariables, variables)
         options = mergeDeep(pOptions, options)
+        //we have the default props already from the parent in this case, so just use the added ones
+        currentProps = this.$options.propsData
       }
 
       const url = buildRokkaUrl({
         ...this.$parent.$props,
-        ...this.$props,
+        ...currentProps,
         operations,
         variables,
         options
