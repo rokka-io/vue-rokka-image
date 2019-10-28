@@ -1,9 +1,10 @@
 <template>
   <img
-    :[srcAttr]="src"
+    :[srcAttribute]="src"
+    :[srcAttributeAdditional]="srcAttributeAdditional ? src: null"
     :alt="alt"
     :title="title"
-    :class="'rokka--attr-' + srcAttr"
+    :class="'rokka--attr-' + srcAttribute"
   />
 </template>
 

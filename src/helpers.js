@@ -15,7 +15,8 @@ export const generalProps = {
   hash: { type: String, default: '' },
   format: { type: String, default: 'jpg' },
   filename: { type: String, default: 'image' },
-  srcAttr: { type: String, default: 'src' },
+  srcAttribute: { type: String, default: 'src' },
+  srcAttributeAdditional: { type: String, default: null },
   operations: {
     type: Array,
     default: () => {
