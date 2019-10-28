@@ -13,7 +13,7 @@ const config = {
     dir: 'dist',
     extractCSS: false,
     format: ['esm', 'iife-min', 'cjs', 'cjs-min', 'umd-min'],
-    moduleName: 'vueNestable',
+    moduleName: 'RokkaImage',
   }
 }
 

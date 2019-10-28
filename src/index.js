@@ -1,13 +1,13 @@
 import RokkaImageImg from "./Img.vue";
 import RokkaImagePicture from "./Picture.vue";
-import RokkaImageSource from "./Source"
-import RokkaHelper from "./helpers"
+import RokkaImageSource from "./Source.vue"
+import {buildRokkaUrl} from "./helpers"
 
 export {
   RokkaImageImg,
   RokkaImagePicture,
   RokkaImageSource,
-  RokkaHelper
+  buildRokkaUrl
 }
 
 export default {
