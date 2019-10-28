@@ -1,6 +1,7 @@
 <template>
   <img
     :[srcAttribute]="src"
+    :[srcsetAttribute]="srcset"
     :[srcAttributeAdditional]="srcAttributeAdditional ? src: null"
     :alt="alt"
     :title="title"
@@ -13,15 +14,31 @@ import {
   generalProps,
   buildRokkaUrl,
   mergeDeep,
-  mergeArraysDeep
+  mergeArraysDeep,
+  srcset,
 } from './helpers'
 
 export default {
   props: {
-    ...generalProps
+    ...generalProps,
+    postfix: {
+      type: [Object, Array],
+      default: () => {
+        return []
+      }
+    },
+    options: {
+      type: [Object, Array],
+      default: () => {
+        return []
+      }
+    },
   },
 
   computed: {
+    srcset() {
+      return srcset(this)
+    },
     src() {
       const currentOperations = this.operations
       const currentOptions = this.options
@@ -35,13 +52,13 @@ export default {
       // depending if passed a obj or an array
       let operations =
         Array.isArray(currentOperations) && Array.isArray(currentOperations[0])
-          ? currentOperations[0]
+          ? (currentOperations[0] || {})
           : currentOperations
       let options = Array.isArray(currentOptions)
-        ? currentOptions[0]
+        ? (currentOptions[0] || {})
         : currentOptions
       let variables = Array.isArray(currentVariables)
-        ? currentVariables[0]
+        ? (currentVariables[0] || {})
         : currentVariables
 
       let currentProps = this.$props

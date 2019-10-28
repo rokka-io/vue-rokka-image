@@ -16,6 +16,7 @@ export const generalProps = {
   format: { type: String, default: 'jpg' },
   filename: { type: String, default: 'image' },
   srcAttribute: { type: String, default: 'src' },
+  srcsetAttribute: { type: String, default: 'srcset' },
   srcAttributeAdditional: { type: String, default: null },
   operations: {
     type: Array,
@@ -156,4 +157,91 @@ export const mergeArraysDeep = (arr1, arr2) => {
   return Object.keys(unique).map(function(key) {
     return unique[key]
   })
+}
+
+export const srcset = (item) => {
+  const currentPostfix = item.postfix
+  const currentOperations = item.operations
+  const currentOptions = item.options
+  const currentVariables = item.variables
+
+  const parrentPostfix = item.$parent.$props.postfix
+  const parrentOperations = item.$parent.$props.operations
+  const parrentOptions = item.$parent.$props.options
+  const parrentVariables = item.$parent.$props.variables
+
+  let maxItems = Math.max(
+    Array.isArray(currentPostfix) ? currentPostfix.length : 0,
+    Array.isArray(currentOperations) ? currentOperations.length : 0,
+    Array.isArray(currentOptions) ? currentOptions.length : 0,
+    Array.isArray(currentVariables) ? currentVariables.length : 0
+  )
+
+  if (item.$parent.$options._componentTag === 'rokka-picture') {
+    maxItems = Math.max(
+      maxItems,
+
+      Array.isArray(parrentPostfix) ? parrentPostfix.length : 0,
+      Array.isArray(parrentOperations) ? parrentOperations.length : 0,
+      Array.isArray(parrentOptions) ? parrentOptions.length : 0,
+      Array.isArray(parrentVariables) ? parrentVariables.length : 0
+    )
+  }
+  const srcset = []
+
+  for (let i = 0; i < maxItems; i++) {
+    // get the current props
+    // depending if passed a obj or an array
+    const postfix = Array.isArray(currentPostfix)
+      ? currentPostfix[i]
+      : currentPostfix
+    let operations =
+      Array.isArray(currentOperations) &&
+      Array.isArray(currentOperations[0])
+        ? currentOperations[i]
+        : currentOperations
+    let options = Array.isArray(currentOptions)
+      ? currentOptions[i]
+      : currentOptions
+    let variables = Array.isArray(currentVariables)
+      ? currentVariables[i]
+      : currentVariables
+
+    if (item.$parent.$options._componentTag === 'rokka-picture') {
+      // get the parent props
+      // depending if passed a obj or an array
+      const pOperations =
+        Array.isArray(parrentOperations) &&
+        Array.isArray(parrentOperations[0])
+          ? parrentOperations[i]
+          : parrentOperations
+      const pOptions = Array.isArray(parrentOptions)
+        ? parrentOptions[i]
+        : parrentOptions
+      const pVariables = Array.isArray(parrentVariables)
+        ? parrentVariables[i]
+        : parrentVariables
+
+      operations = mergeArraysDeep(pOperations, operations)
+      variables = mergeDeep(pVariables, variables)
+      options = mergeDeep(pOptions, options)
+    }
+
+    if (options instanceof  Array && options.length === 0) {
+      options = {}
+    }
+
+    let url = buildRokkaUrl({
+      ...item.$parent.$props,
+      ...item.$options.propsData,
+      operations,
+      variables,
+      options
+    })
+
+    url = url + (postfix ? ' ' + postfix : '')
+
+    srcset.push(url)
+  }
+  return srcset.join(', ')
 }
