@@ -1,7 +1,7 @@
 <template>
   <div class="rokka-picture">
     <picture>
-      <slot></slot>
+      <slot />
     </picture>
   </div>
 </template>
@@ -11,7 +11,7 @@ import { generalProps } from './helpers'
 
 export default {
   props: {
-    ...generalProps
-  }
+    ...generalProps,
+  },
 }
 </script>
