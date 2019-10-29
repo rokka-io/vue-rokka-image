@@ -12,7 +12,7 @@
 <script>
 import {
   generalProps,
-  buildRokkaUrl,
+  rokkaUrl,
   mergeDeep,
   mergeArraysDeep,
   srcset,
@@ -98,7 +98,7 @@ export default {
         currentProps = this.$options.propsData
       }
 
-      const url = buildRokkaUrl({
+      const url = rokkaUrl({
         ...this.$parent.$props,
         ...currentProps,
         operations,

@@ -73,7 +73,7 @@ export const flattenObject = obj => {
   return toReturn
 }
 
-export const buildRokkaUrl = props => {
+export const rokkaUrl = props => {
   const {
     org,
     stack,
@@ -230,7 +230,7 @@ export const srcset = item => {
       options = {}
     }
 
-    let url = buildRokkaUrl({
+    let url = rokkaUrl({
       ...item.$parent.$props,
       ...item.$options.propsData,
       operations,

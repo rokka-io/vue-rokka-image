@@ -1,14 +1,14 @@
-import RokkaImageImg from './Img.vue'
-import RokkaImagePicture from './Picture.vue'
-import RokkaImageSource from './Source.vue'
-import { buildRokkaUrl } from './helpers'
+import RokkaImg from './Img.vue'
+import RokkaPicture from './Picture.vue'
+import RokkaSource from './Source.vue'
+import { rokkaUrl } from './helpers'
 
-export { RokkaImageImg, RokkaImagePicture, RokkaImageSource, buildRokkaUrl }
+export { RokkaImg, RokkaPicture, RokkaSource, rokkaUrl }
 
 export default {
   install(Vue) {
-    Vue.component('rokka-image-img', RokkaImageImg)
-    Vue.component('rokka-image-picture', RokkaImagePicture)
-    Vue.component('rokka-image-source', RokkaImageSource)
+    Vue.component('rokka-img', RokkaImg)
+    Vue.component('rokka-picture', RokkaPicture)
+    Vue.component('rokka-source', RokkaSource)
   },
 }
