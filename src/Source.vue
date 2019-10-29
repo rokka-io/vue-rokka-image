@@ -3,10 +3,7 @@
 </template>
 
 <script>
-import {
-  generalProps,
-  srcset,
-} from './helpers'
+import { generalProps, srcset } from './helpers'
 
 export default {
   props: {
@@ -16,26 +13,26 @@ export default {
       type: [Object, Array],
       default: () => {
         return []
-      }
+      },
     },
     options: {
       type: [Object, Array],
       default: () => {
         return []
-      }
+      },
     },
     variables: {
       type: [Object, Array],
       default: () => {
         return []
-      }
-    }
+      },
+    },
   },
 
   computed: {
     srcset() {
-        srcset(this)
-    }
-  }
+      return srcset(this)
+    },
+  },
 }
 </script>

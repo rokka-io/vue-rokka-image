@@ -25,18 +25,18 @@ export default {
       type: [Object, Array],
       default: () => {
         return []
-      }
+      },
     },
     options: {
       type: [Object, Array],
       default: () => {
         return []
-      }
+      },
     },
     srcAdditional: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
 
   computed: {
@@ -44,7 +44,11 @@ export default {
     // Is useful, when you want to set "src" to a loading image, which then later gets replaced
     // by a lazy loader and data-src(set)
     srcAdditionalComputed() {
-      return  this.srcAdditionalAttribute ? (this.srcAdditional ? this.srcAdditional : this.rokkaSrc) : null;
+      return this.srcAdditionalAttribute
+        ? this.srcAdditional
+          ? this.srcAdditional
+          : this.rokkaSrc
+        : null
     },
     rokkaSrcset() {
       return srcset(this)
@@ -62,13 +66,13 @@ export default {
       // depending if passed a obj or an array
       let operations =
         Array.isArray(currentOperations) && Array.isArray(currentOperations[0])
-          ? (currentOperations[0] || {})
+          ? currentOperations[0] || {}
           : currentOperations
       let options = Array.isArray(currentOptions)
-        ? (currentOptions[0] || {})
+        ? currentOptions[0] || {}
         : currentOptions
       let variables = Array.isArray(currentVariables)
-        ? (currentVariables[0] || {})
+        ? currentVariables[0] || {}
         : currentVariables
 
       let currentProps = this.$props
@@ -99,11 +103,11 @@ export default {
         ...currentProps,
         operations,
         variables,
-        options
+        options,
       })
 
       return url
-    }
-  }
+    },
+  },
 }
 </script>

@@ -22,20 +22,20 @@ export const generalProps = {
     type: Array,
     default: () => {
       return []
-    }
+    },
   },
   options: {
     type: Object,
     default: () => {
       return {}
-    }
+    },
   },
   variables: {
     type: Object,
     default: () => {
       return {}
-    }
-  }
+    },
+  },
 }
 
 // from an object to the rokka notation
@@ -58,8 +58,7 @@ export const flattenObject = obj => {
     if (typeof val === 'object') {
       const flatObject = flattenObject(val)
       for (const x in flatObject) {
-        if (!flatObject.hasOwnProperty(x)) continue
-
+        if (!Object.prototype.hasOwnProperty.call(flatObject, x)) continue
         // are we itteration over a array or object
         if (Array.isArray(flatObject)) {
           toReturn.push(`${key}-${flatObject[x]}`)
@@ -83,7 +82,7 @@ export const buildRokkaUrl = props => {
     options,
     filename,
     format,
-    hash
+    hash,
   } = props
 
   // let operationsStr = null
@@ -102,8 +101,10 @@ export const buildRokkaUrl = props => {
     variablesStr,
     optionsStr,
     hash,
-    `${sanitizedFilename(filename)}.${format}`
-  ].join('/').replace(/\/{2,}/g, '/')
+    `${sanitizedFilename(filename)}.${format}`,
+  ]
+    .join('/')
+    .replace(/\/{2,}/g, '/')
 
   return 'https://' + url
 }
@@ -159,7 +160,7 @@ export const mergeArraysDeep = (arr1, arr2) => {
   })
 }
 
-export const srcset = (item) => {
+export const srcset = item => {
   const currentPostfix = item.postfix
   const currentOperations = item.operations
   const currentOptions = item.options
@@ -196,8 +197,7 @@ export const srcset = (item) => {
       ? currentPostfix[i]
       : currentPostfix
     let operations =
-      Array.isArray(currentOperations) &&
-      Array.isArray(currentOperations[0])
+      Array.isArray(currentOperations) && Array.isArray(currentOperations[0])
         ? currentOperations[i]
         : currentOperations
     let options = Array.isArray(currentOptions)
@@ -211,8 +211,7 @@ export const srcset = (item) => {
       // get the parent props
       // depending if passed a obj or an array
       const pOperations =
-        Array.isArray(parrentOperations) &&
-        Array.isArray(parrentOperations[0])
+        Array.isArray(parrentOperations) && Array.isArray(parrentOperations[0])
           ? parrentOperations[i]
           : parrentOperations
       const pOptions = Array.isArray(parrentOptions)
@@ -227,7 +226,7 @@ export const srcset = (item) => {
       options = mergeDeep(pOptions, options)
     }
 
-    if (options instanceof  Array && options.length === 0) {
+    if (options instanceof Array && options.length === 0) {
       options = {}
     }
 
@@ -236,10 +235,10 @@ export const srcset = (item) => {
       ...item.$options.propsData,
       operations,
       variables,
-      options
+      options,
     })
 
-    url = encodeURI(url)  + (postfix ? ' ' + postfix : '')
+    url = encodeURI(url) + (postfix ? ' ' + postfix : '')
 
     srcset.push(url)
   }
