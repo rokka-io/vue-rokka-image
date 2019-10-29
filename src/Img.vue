@@ -58,9 +58,12 @@ export default {
       const currentOptions = this.options
       const currentVariables = this.variables
 
-      const parrentOperations = this.$parent.$props.operations
-      const parrentOptions = this.$parent.$props.options
-      const parrentVariables = this.$parent.$props.variables
+      const parrentOperations =
+        this.$parent && this.$parent.$props && this.$parent.$props.operations
+      const parrentOptions =
+        this.$parent && this.$parent.$props && this.$parent.$props.options
+      const parrentVariables =
+        this.$parent && this.$parent.$props && this.$parent.$props.variables
 
       // get the current props
       // depending if passed a obj or an array

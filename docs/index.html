@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NPM vue rokka image</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script src="../dist/index.umd.min.js"></script>
+  </head>
+  <body>
+    <!-- page content -->
+    <div id="rokka">
+      <h2>Simple example</h2>
+      <rokka-img
+        alt="alt"
+        title="Title"
+        org="playground"
+        stack="dynamic"
+        :hash="hash"
+        format="jpg"
+        filename="image.jpg"
+        :operations="[
+          {
+            name: 'resize',
+            options: { mode: 'fill' },
+            expressions: { width: '$width', height: '$height' }
+          },
+          { name: 'crop', expressions: { width: '$width', height: '$height' } }
+        ]"
+        :variables="{ width: 200, height: 200 }"
+      />
+
+      <h2>Complex example</h2>
+
+      <rokka-picture
+        alt="alt"
+        title="Title"
+        org="playground"
+        stack="dynamic"
+        :hash="hash"
+        format="jpg"
+        filename="image.jpg"
+        :operations="[
+          {
+            name: 'resize',
+            options: { mode: 'fill' },
+            expressions: { width: '$width', height: '$height' }
+          },
+          { name: 'crop', expressions: { width: '$width', height: '$height' } }
+        ]"
+        :variables="{ width: 200, height: 200 }"
+      >
+        <rokka-source
+          :media="'all'"
+          :postfix="['1x', '2x']"
+          :variables="{
+            width: 300,
+            height: 200
+          }"
+          :options="[
+            {
+              dpr: '1'
+            },
+            {
+              dpr: '2'
+            }
+          ]"
+        />
+        <rokka-img />
+      </rokka-picture>
+
+    </div>
+    <script src="script.js"></script>
+
+  </body>
+</html>

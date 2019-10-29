@@ -166,10 +166,14 @@ export const srcset = item => {
   const currentOptions = item.options
   const currentVariables = item.variables
 
-  const parrentPostfix = item.$parent.$props.postfix
-  const parrentOperations = item.$parent.$props.operations
-  const parrentOptions = item.$parent.$props.options
-  const parrentVariables = item.$parent.$props.variables
+  const parrentPostfix =
+    item.$parent && item.$parent.$props && item.$parent.$props.postfix
+  const parrentOperations =
+    item.$parent && item.$parent.$props && item.$parent.$props.operations
+  const parrentOptions =
+    item.$parent && item.$parent.$props && item.$parent.$props.options
+  const parrentVariables =
+    item.$parent && item.$parent.$props && item.$parent.$props.variables
 
   let maxItems = Math.max(
     Array.isArray(currentPostfix) ? currentPostfix.length : 0,
