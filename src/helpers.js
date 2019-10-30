@@ -77,7 +77,7 @@ export const rokkaUrl = props => {
   const {
     org,
     stack,
-    // operations,
+    operations,
     variables,
     options,
     filename,
@@ -85,19 +85,38 @@ export const rokkaUrl = props => {
     hash,
   } = props
 
-  // let operationsStr = null
-  // if (operations && operations.length) {
-  //   operationsStr = operations
-  //     .reduce(operation => flattenObject(operation), [])
-  //     .join('--')
-  // }
+  let operationsStr = null
+  if (operations && operations.length) {
+    operationsStr = operations
+      .map(operation => {
+        if (operation.options) {
+          const operationOptions = flattenObject(operation.options).join('-')
+          if (operationOptions) {
+            return operation.name + '-' + operationOptions
+          }
+        }
+        return operation.name
+      })
+      .join('--')
+  }
 
-  const variablesStr = flattenObject({ v: variables }).join('--')
-  const optionsStr = flattenObject({ options }).join('--')
-
+  let variablesStr = ''
+  if (variables) {
+    variablesStr = flattenObject(variables).join('-')
+    if (variablesStr) {
+      variablesStr = 'v-' + optionsStr
+    }
+  }
+  let optionsStr = ''
+  if (options) {
+    optionsStr = flattenObject(options).join('-')
+    if (optionsStr) {
+      optionsStr = 'o-' + optionsStr
+    }
+  }
   const url = [
     `${org}.rokka.io/${stack}`,
-    // operationsStr,
+    operationsStr,
     variablesStr,
     optionsStr,
     hash,
@@ -175,22 +194,16 @@ export const srcset = item => {
   const parrentVariables =
     item.$parent && item.$parent.$props && item.$parent.$props.variables
 
-  let maxItems = Math.max(
-    Array.isArray(currentPostfix) ? currentPostfix.length : 0,
-    Array.isArray(currentOperations) ? currentOperations.length : 0,
-    Array.isArray(currentOptions) ? currentOptions.length : 0,
-    Array.isArray(currentVariables) ? currentVariables.length : 0
-  )
+  let maxItems = Array.isArray(currentPostfix) ? currentPostfix.length : 0
 
-  if (item.$parent.$options._componentTag === 'rokka-picture') {
+  if (item.$parent.$data.isRokkaPictureTag) {
     maxItems = Math.max(
       maxItems,
-
-      Array.isArray(parrentPostfix) ? parrentPostfix.length : 0,
-      Array.isArray(parrentOperations) ? parrentOperations.length : 0,
-      Array.isArray(parrentOptions) ? parrentOptions.length : 0,
-      Array.isArray(parrentVariables) ? parrentVariables.length : 0
+      Array.isArray(parrentPostfix) ? parrentPostfix.length : 0
     )
+  }
+  if (maxItems === 0) {
+    return null
   }
   const srcset = []
 
@@ -211,7 +224,7 @@ export const srcset = item => {
       ? currentVariables[i]
       : currentVariables
 
-    if (item.$parent.$options._componentTag === 'rokka-picture') {
+    if (item.$parent.$data.isRokkaPictureTag) {
       // get the parent props
       // depending if passed a obj or an array
       const pOperations =

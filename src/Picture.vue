@@ -13,5 +13,10 @@ export default {
   props: {
     ...generalProps,
   },
+  data() {
+    return {
+      isRokkaPictureTag: true,
+    }
+  },
 }
 </script>
