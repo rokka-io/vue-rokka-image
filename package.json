@@ -1,6 +1,6 @@
 {
   "name": "vue-rokka-image",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "to come",
   "scripts": {
     "build": "rm -rf ./dist && bili",
@@ -8,14 +8,18 @@
     "lint": "eslint src/*",
     "fix": "eslint src/* --fix"
   },
-  "files": ["/dist/*"],
+  "files": [
+    "/dist/*"
+  ],
   "module": "dist/index.umd.js",
   "main": "dist/index.umd.min.js",
   "unpkg": "dist/index.iife.min.js",
   "jsdelivr": "dist/index.iife.min.js",
   "author": "",
   "license": "ISC",
-  "engines": { "node": "^10" },
+  "engines": {
+    "node": "^10"
+  },
   "devDependencies": {
     "bili": "^4.8.1",
     "rollup-plugin-vue": "^5.1.2",
