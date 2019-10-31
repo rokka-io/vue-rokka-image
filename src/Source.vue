@@ -30,7 +30,6 @@ export default {
     // Is useful, when you want to set "srcset" to a loading image, which then later gets replaced
     // by a lazy loader and data-srcset
     srcsetAdditionalComputed() {
-      console.log(this.srcsetAdditionalAttribute, this.srcsetAdditional)
       return this.srcsetAdditionalAttribute
         ? this.srcsetAdditional
           ? this.srcsetAdditional

@@ -45,11 +45,18 @@ export default {
     },
     rokkaSrc() {
       let parent = this.$parent
+      let i = 0
       while (
         parent.$data &&
         !parent.$data.isRokkaPictureTag &&
         parent.$parent
       ) {
+        i++
+        // just break after 2 levels, that's enough for the -lazy component
+        // if needed, we can increase this
+        if (i > 1) {
+          break
+        }
         parent = parent.$parent
       }
       const currentOperations = this.operations

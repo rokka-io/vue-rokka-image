@@ -9,7 +9,8 @@
     "fix": "eslint src/* --fix"
   },
   "files": [
-    "/dist/*"
+    "/dist/*",
+    "/src/*"
   ],
   "module": "dist/index.esm.js",
   "main": "dist/index.esm.min.js",
