@@ -24,12 +24,14 @@ npm i vue-rokka-image
   :operations="[
     {
       name: 'resize',
-      options: { mode: 'fill' },
-      expressions: { width: '$width', height: '$height' }
+      options: { mode: 'fill', width: 200, height: 200 }
+     
     },
-    { name: 'crop', expressions: { width: '$width', height: '$height' } }
+    { 
+      name: 'crop', 
+      options: { width: 200, height: 200 } 
+    }
   ]"
-  :variables="{ width: 200, height: 200 }"
 />
 ```
 
@@ -50,20 +52,19 @@ This produces two sources because there is an array in `optons` and `postfix`.
   :operations="[
     {
       name: 'resize',
-      options: { mode: 'fill' },
-      expressions: { width: '$width', height: '$height' }
+      options: { mode: 'fill', width: 200, height: 200 }
+     
     },
-    { name: 'crop', expressions: { width: '$width', height: '$height' } }
+    { 
+      name: 'crop', 
+      options: { width: 200, height: 200 } 
+    }
   ]"
-  :variables="{ width: 600, height: 400 }"
+  
 >
   <rokka-source
     :media="'all'"
     :postfix="['1x', '2x']"
-    :variables="{
-      width: 300,
-      height: 200
-    }"
     :options="[
       {
         dpr: '1'
