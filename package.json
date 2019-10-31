@@ -15,8 +15,8 @@
   "main": "dist/index.umd.min.js",
   "unpkg": "dist/index.iife.min.js",
   "jsdelivr": "dist/index.iife.min.js",
-  "author": "",
-  "license": "ISC",
+  "author": "rokka.io",
+  "license": "MIT",
   "engines": {
     "node": "^10"
   },
