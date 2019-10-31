@@ -16,7 +16,6 @@ export const generalProps = {
   format: { type: String, default: 'jpg' },
   filename: { type: String, default: 'image' },
   srcAttribute: { type: String, default: 'src' },
-  srcAdditionalAttribute: { type: String, default: null },
   srcsetAttribute: { type: String, default: 'srcset' },
   postfix: {
     type: Array,
@@ -190,14 +189,21 @@ export const srcset = item => {
   const currentOptions = item.options
   const currentVariables = item.variables
 
-  const parrentPostfix =
-    item.$parent && item.$parent.$props && item.$parent.$props.postfix
-  const parrentOperations =
-    item.$parent && item.$parent.$props && item.$parent.$props.operations
-  const parrentOptions =
-    item.$parent && item.$parent.$props && item.$parent.$props.options
-  const parrentVariables =
-    item.$parent && item.$parent.$props && item.$parent.$props.variables
+  let parent = item.$parent
+  let i = 0
+  while (parent.$data && !parent.$data.isRokkaPictureTag && parent.$parent) {
+    i++
+    // just break after 2 levels, that's enough for the -lazy component
+    // if needed, we can increase this
+    if (i > 1) {
+      break
+    }
+    parent = parent.$parent
+  }
+  const parrentPostfix = parent && parent.$props && parent.$props.postfix
+  const parrentOperations = parent && parent.$props && parent.$props.operations
+  const parrentOptions = parent && parent.$props && parent.$props.options
+  const parrentVariables = parent && parent.$props && parent.$props.variables
 
   let postfixActual = currentPostfix
   // null === default, inherit from parent, if set, otherwise it's not set in parent or here, return null
@@ -230,7 +236,9 @@ export const srcset = item => {
       ? currentVariables[i]
       : currentVariables
 
-    if (item.$parent.$data.isRokkaPictureTag) {
+    let currentProps = item.$props
+
+    if (parent.$data.isRokkaPictureTag) {
       // get the parent props
       // depending if passed a obj or an array
       const pOperations =
@@ -247,15 +255,15 @@ export const srcset = item => {
       operations = mergeArraysDeep(pOperations, operations)
       variables = mergeDeep(pVariables, variables)
       options = mergeDeep(pOptions, options)
+      currentProps = removeDefaultPropsProperties(item.$options.propsData)
     }
 
     if (options instanceof Array && options.length === 0) {
       options = {}
     }
-
     let url = rokkaUrl({
-      ...item.$parent.$props,
-      ...item.$options.propsData,
+      ...parent.$props,
+      ...currentProps,
       operations,
       variables,
       options,
@@ -266,4 +274,8 @@ export const srcset = item => {
     srcset.push(url)
   }
   return srcset.join(', ')
+}
+
+export const removeDefaultPropsProperties = currentProps => {
+  return currentProps
 }

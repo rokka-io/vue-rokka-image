@@ -16,11 +16,13 @@ import {
   mergeDeep,
   mergeArraysDeep,
   srcset,
+  removeDefaultPropsProperties,
 } from './helpers'
 
 export default {
   props: {
     ...generalProps,
+    srcAdditionalAttribute: { type: String, default: null },
     srcAdditional: {
       type: String,
       default: null,
@@ -42,16 +44,22 @@ export default {
       return srcset(this)
     },
     rokkaSrc() {
+      let parent = this.$parent
+      while (
+        parent.$data &&
+        !parent.$data.isRokkaPictureTag &&
+        parent.$parent
+      ) {
+        parent = parent.$parent
+      }
       const currentOperations = this.operations
       const currentOptions = this.options
       const currentVariables = this.variables
-
       const parrentOperations =
-        this.$parent && this.$parent.$props && this.$parent.$props.operations
-      const parrentOptions =
-        this.$parent && this.$parent.$props && this.$parent.$props.options
+        parent && parent.$props && parent.$props.operations
+      const parrentOptions = parent && parent.$props && parent.$props.options
       const parrentVariables =
-        this.$parent && this.$parent.$props && this.$parent.$props.variables
+        parent && parent.$props && parent.$props.variables
 
       // get the current props
       // depending if passed a obj or an array
@@ -67,7 +75,7 @@ export default {
         : currentVariables
 
       let currentProps = this.$props
-      if (this.$parent.$data.isRokkaPictureTag) {
+      if (parent.$data.isRokkaPictureTag) {
         // get the parent props
         // depending if passed a obj or an array
         const pOperations =
@@ -87,11 +95,11 @@ export default {
         variables = mergeDeep(pVariables, variables)
         options = mergeDeep(pOptions, options)
         //we have the default props already from the parent in this case, so just use the added ones
-        currentProps = this.$options.propsData
+        currentProps = removeDefaultPropsProperties(this.$options.propsData)
       }
 
       const url = rokkaUrl({
-        ...this.$parent.$props,
+        ...parent.$props,
         ...currentProps,
         operations,
         variables,
