@@ -9,24 +9,6 @@ export default {
   props: {
     ...generalProps,
     media: { type: String, default: '' },
-    postfix: {
-      type: [Object, Array],
-      default: () => {
-        return []
-      },
-    },
-    options: {
-      type: [Object, Array],
-      default: () => {
-        return []
-      },
-    },
-    variables: {
-      type: [Object, Array],
-      default: () => {
-        return []
-      },
-    },
   },
 
   computed: {

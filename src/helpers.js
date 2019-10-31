@@ -18,6 +18,10 @@ export const generalProps = {
   srcAttribute: { type: String, default: 'src' },
   srcAdditionalAttribute: { type: String, default: null },
   srcsetAttribute: { type: String, default: 'srcset' },
+  postfix: {
+    type: Array,
+    default: null,
+  },
   operations: {
     type: Array,
     default: () => {
@@ -25,15 +29,15 @@ export const generalProps = {
     },
   },
   options: {
-    type: Object,
+    type: [Object, Array],
     default: () => {
-      return {}
+      return []
     },
   },
   variables: {
-    type: Object,
+    type: [Object, Array],
     default: () => {
-      return {}
+      return []
     },
   },
 }
@@ -104,7 +108,7 @@ export const rokkaUrl = props => {
   if (variables) {
     variablesStr = flattenObject(variables).join('-')
     if (variablesStr) {
-      variablesStr = 'v-' + optionsStr
+      variablesStr = 'v-' + variablesStr
     }
   }
   let optionsStr = ''
@@ -144,9 +148,10 @@ export const isObject = item => {
  * @param target
  * @param ...sources
  */
-export const mergeDeep = (target, ...sources) => {
-  if (!sources.length) return target
-  const source = sources.shift()
+export const mergeDeep = (targetIn, ...sourcesIn) => {
+  if (!sourcesIn.length) return targetIn
+  const source = Object.assign({}, sourcesIn.shift())
+  const target = Object.assign({}, targetIn)
 
   if (isObject(target) && isObject(source)) {
     for (const key in source) {
@@ -159,7 +164,7 @@ export const mergeDeep = (target, ...sources) => {
     }
   }
 
-  return mergeDeep(target, ...sources)
+  return mergeDeep(target, ...sourcesIn)
 }
 
 // https://stackoverflow.com/questions/40712399/deep-merging-nested-arrays
@@ -194,25 +199,26 @@ export const srcset = item => {
   const parrentVariables =
     item.$parent && item.$parent.$props && item.$parent.$props.variables
 
-  let maxItems = Array.isArray(currentPostfix) ? currentPostfix.length : 0
-
-  if (item.$parent.$data.isRokkaPictureTag) {
-    maxItems = Math.max(
-      maxItems,
-      Array.isArray(parrentPostfix) ? parrentPostfix.length : 0
-    )
+  let postfixActual = currentPostfix
+  // null === default, inherit from parent, if set, otherwise it's not set in parent or here, return null
+  if (postfixActual === null) {
+    if (parrentPostfix) {
+      postfixActual = parrentPostfix
+    } else {
+      return null
+    }
   }
-  if (maxItems === 0) {
+
+  if (postfixActual.length === 0) {
     return null
   }
-  const srcset = []
 
-  for (let i = 0; i < maxItems; i++) {
+  const srcset = []
+  for (let i = 0; i < postfixActual.length; i++) {
     // get the current props
     // depending if passed a obj or an array
-    const postfix = Array.isArray(currentPostfix)
-      ? currentPostfix[i]
-      : currentPostfix
+    const postfix = postfixActual[i]
+
     let operations =
       Array.isArray(currentOperations) && Array.isArray(currentOperations[0])
         ? currentOperations[i]

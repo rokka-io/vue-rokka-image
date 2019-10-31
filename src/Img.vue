@@ -21,18 +21,6 @@ import {
 export default {
   props: {
     ...generalProps,
-    postfix: {
-      type: [Object, Array],
-      default: () => {
-        return []
-      },
-    },
-    options: {
-      type: [Object, Array],
-      default: () => {
-        return []
-      },
-    },
     srcAdditional: {
       type: String,
       default: null,
@@ -79,7 +67,7 @@ export default {
         : currentVariables
 
       let currentProps = this.$props
-      if (this.$parent.$options._componentTag === 'rokka-picture') {
+      if (this.$parent.$data.isRokkaPictureTag) {
         // get the parent props
         // depending if passed a obj or an array
         const pOperations =
@@ -90,9 +78,10 @@ export default {
         const pOptions = Array.isArray(parrentOptions)
           ? parrentOptions[0]
           : parrentOptions
-        const pVariables = Array.isArray(parrentVariables)
-          ? parrentVariables[0]
-          : parrentVariables
+        const pVariables =
+          Array.isArray(parrentVariables) && parrentVariables.length > 0
+            ? parrentVariables[0]
+            : parrentVariables
 
         operations = mergeArraysDeep(pOperations, operations)
         variables = mergeDeep(pVariables, variables)
