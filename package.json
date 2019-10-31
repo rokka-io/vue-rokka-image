@@ -3,32 +3,34 @@
   "version": "0.0.10",
   "description": "Vue 2.x component for the image processing service rokka.io",
   "scripts": {
-    "build": "rm -rf ./dist && bili",
-    "watch": "bili -w",
+    "build": "rm -rf ./dist && rollup -c",
+    "watch": "rollup -c -w",
     "lint": "eslint src/*",
     "fix": "eslint src/* --fix"
   },
   "files": [
     "/dist/*"
   ],
-  "module": "dist/index.umd.js",
-  "main": "dist/index.umd.min.js",
-  "unpkg": "dist/index.iife.min.js",
-  "jsdelivr": "dist/index.iife.min.js",
+  "module": "dist/index.esm.js",
+  "main": "dist/index.esm.min.js",
   "author": "rokka.io",
   "license": "MIT",
   "engines": {
     "node": "^10"
   },
   "devDependencies": {
-    "bili": "^4.8.1",
-    "rollup-plugin-vue": "^5.1.2",
-    "vue": "^2.6.10",
-    "vue-template-compiler": "^2.6.10",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^5.2.3",
-    "babel-eslint": "^10.0.3"
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-vue": "^5.1.2",
+    "vue": "^2.6.10",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "dependencies": {
+    "rollup": "^1.26.0",
+    "vue-runtime-helpers": "^1.1.2"
   }
 }
