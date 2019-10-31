@@ -16,8 +16,11 @@ export const generalProps = {
   format: { type: String, default: 'jpg' },
   filename: { type: String, default: 'image' },
   srcAttribute: { type: String, default: 'src' },
-  srcAdditionalAttribute: { type: String, default: null },
   srcsetAttribute: { type: String, default: 'srcset' },
+  postfix: {
+    type: Array,
+    default: null,
+  },
   operations: {
     type: Array,
     default: () => {
@@ -25,15 +28,15 @@ export const generalProps = {
     },
   },
   options: {
-    type: Object,
+    type: [Object, Array],
     default: () => {
-      return {}
+      return []
     },
   },
   variables: {
-    type: Object,
+    type: [Object, Array],
     default: () => {
-      return {}
+      return []
     },
   },
 }
@@ -77,7 +80,7 @@ export const rokkaUrl = props => {
   const {
     org,
     stack,
-    // operations,
+    operations,
     variables,
     options,
     filename,
@@ -85,19 +88,38 @@ export const rokkaUrl = props => {
     hash,
   } = props
 
-  // let operationsStr = null
-  // if (operations && operations.length) {
-  //   operationsStr = operations
-  //     .reduce(operation => flattenObject(operation), [])
-  //     .join('--')
-  // }
+  let operationsStr = null
+  if (operations && operations.length) {
+    operationsStr = operations
+      .map(operation => {
+        if (operation.options) {
+          const operationOptions = flattenObject(operation.options).join('-')
+          if (operationOptions) {
+            return operation.name + '-' + operationOptions
+          }
+        }
+        return operation.name
+      })
+      .join('--')
+  }
 
-  const variablesStr = flattenObject({ v: variables }).join('--')
-  const optionsStr = flattenObject({ options }).join('--')
-
+  let variablesStr = ''
+  if (variables) {
+    variablesStr = flattenObject(variables).join('-')
+    if (variablesStr) {
+      variablesStr = 'v-' + variablesStr
+    }
+  }
+  let optionsStr = ''
+  if (options) {
+    optionsStr = flattenObject(options).join('-')
+    if (optionsStr) {
+      optionsStr = 'o-' + optionsStr
+    }
+  }
   const url = [
     `${org}.rokka.io/${stack}`,
-    // operationsStr,
+    operationsStr,
     variablesStr,
     optionsStr,
     hash,
@@ -125,9 +147,10 @@ export const isObject = item => {
  * @param target
  * @param ...sources
  */
-export const mergeDeep = (target, ...sources) => {
-  if (!sources.length) return target
-  const source = sources.shift()
+export const mergeDeep = (targetIn, ...sourcesIn) => {
+  if (!sourcesIn.length) return targetIn
+  const source = Object.assign({}, sourcesIn.shift())
+  const target = Object.assign({}, targetIn)
 
   if (isObject(target) && isObject(source)) {
     for (const key in source) {
@@ -140,7 +163,7 @@ export const mergeDeep = (target, ...sources) => {
     }
   }
 
-  return mergeDeep(target, ...sources)
+  return mergeDeep(target, ...sourcesIn)
 }
 
 // https://stackoverflow.com/questions/40712399/deep-merging-nested-arrays
@@ -166,40 +189,42 @@ export const srcset = item => {
   const currentOptions = item.options
   const currentVariables = item.variables
 
-  const parrentPostfix =
-    item.$parent && item.$parent.$props && item.$parent.$props.postfix
-  const parrentOperations =
-    item.$parent && item.$parent.$props && item.$parent.$props.operations
-  const parrentOptions =
-    item.$parent && item.$parent.$props && item.$parent.$props.options
-  const parrentVariables =
-    item.$parent && item.$parent.$props && item.$parent.$props.variables
-
-  let maxItems = Math.max(
-    Array.isArray(currentPostfix) ? currentPostfix.length : 0,
-    Array.isArray(currentOperations) ? currentOperations.length : 0,
-    Array.isArray(currentOptions) ? currentOptions.length : 0,
-    Array.isArray(currentVariables) ? currentVariables.length : 0
-  )
-
-  if (item.$parent.$options._componentTag === 'rokka-picture') {
-    maxItems = Math.max(
-      maxItems,
-
-      Array.isArray(parrentPostfix) ? parrentPostfix.length : 0,
-      Array.isArray(parrentOperations) ? parrentOperations.length : 0,
-      Array.isArray(parrentOptions) ? parrentOptions.length : 0,
-      Array.isArray(parrentVariables) ? parrentVariables.length : 0
-    )
+  let parent = item.$parent
+  let i = 0
+  while (parent.$data && !parent.$data.isRokkaPictureTag && parent.$parent) {
+    i++
+    // just break after 2 levels, that's enough for the -lazy component
+    // if needed, we can increase this
+    if (i > 1) {
+      break
+    }
+    parent = parent.$parent
   }
-  const srcset = []
+  const parrentPostfix = parent && parent.$props && parent.$props.postfix
+  const parrentOperations = parent && parent.$props && parent.$props.operations
+  const parrentOptions = parent && parent.$props && parent.$props.options
+  const parrentVariables = parent && parent.$props && parent.$props.variables
 
-  for (let i = 0; i < maxItems; i++) {
+  let postfixActual = currentPostfix
+  // null === default, inherit from parent, if set, otherwise it's not set in parent or here, return null
+  if (postfixActual === null) {
+    if (parrentPostfix) {
+      postfixActual = parrentPostfix
+    } else {
+      return null
+    }
+  }
+
+  if (postfixActual.length === 0) {
+    return null
+  }
+
+  const srcset = []
+  for (let i = 0; i < postfixActual.length; i++) {
     // get the current props
     // depending if passed a obj or an array
-    const postfix = Array.isArray(currentPostfix)
-      ? currentPostfix[i]
-      : currentPostfix
+    const postfix = postfixActual[i]
+
     let operations =
       Array.isArray(currentOperations) && Array.isArray(currentOperations[0])
         ? currentOperations[i]
@@ -211,7 +236,9 @@ export const srcset = item => {
       ? currentVariables[i]
       : currentVariables
 
-    if (item.$parent.$options._componentTag === 'rokka-picture') {
+    let currentProps = item.$props
+
+    if (parent.$data.isRokkaPictureTag) {
       // get the parent props
       // depending if passed a obj or an array
       const pOperations =
@@ -228,15 +255,15 @@ export const srcset = item => {
       operations = mergeArraysDeep(pOperations, operations)
       variables = mergeDeep(pVariables, variables)
       options = mergeDeep(pOptions, options)
+      currentProps = removeDefaultPropsProperties(item.$options.propsData)
     }
 
     if (options instanceof Array && options.length === 0) {
       options = {}
     }
-
     let url = rokkaUrl({
-      ...item.$parent.$props,
-      ...item.$options.propsData,
+      ...parent.$props,
+      ...currentProps,
       operations,
       variables,
       options,
@@ -247,4 +274,8 @@ export const srcset = item => {
     srcset.push(url)
   }
   return srcset.join(', ')
+}
+
+export const removeDefaultPropsProperties = currentProps => {
+  return currentProps
 }

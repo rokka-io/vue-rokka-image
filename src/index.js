@@ -1,9 +1,9 @@
 import RokkaImg from './Img.vue'
 import RokkaPicture from './Picture.vue'
 import RokkaSource from './Source.vue'
-import { rokkaUrl } from './helpers'
+import { rokkaUrl, generalProps } from './helpers'
 
-export { RokkaImg, RokkaPicture, RokkaSource, rokkaUrl }
+export { RokkaImg, RokkaPicture, RokkaSource, rokkaUrl, generalProps }
 export default {
   install(Vue) {
     Vue.component('rokka-img', RokkaImg)
