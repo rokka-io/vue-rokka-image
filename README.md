@@ -1,8 +1,18 @@
-# Vue component for rokka-Images
+# Vue component for rokka images
+
+[![npm](https://badgen.net/npm/v/vue-rokka-image)](https://www.npmjs.com/package/vue-rokka-image)
+[![travis](https://badgen.net/travis/rokka-io/vue-rokka-image/beta)](https://travis-ci.org/rokka-io/vue-rokka-image)
+[![bundlephobia zipped](https://badgen.net/bundlephobia/min/vue-rokka-image)](https://bundlephobia.com/result?p=vue-rokka-image)
+[![bundlephobia minified](https://badgen.net/bundlephobia/minzip/vue-rokka-image)](https://bundlephobia.com/result?p=vue-rokka-image)
+
+
 [Vue 2.x](https://vuejs.org/) component for the image processing service [rokka.io](https://rokka.io/)
 
-
 If you need a lazy version use [`vue-rokka-image-lazy`](https://github.com/rokka-io/vue-rokka-image-lazy)
+
+## Demo 
+
+[jsFiddle](https://jsfiddle.net/chregu/v4noLkgd/)
 
 ## Installation
 
