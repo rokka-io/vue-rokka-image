@@ -8,9 +8,8 @@ export default {
     {
       file: 'dist/index.iife.min.js',
       format: 'iife',
-      name: 'RokkaImage',
+      name: 'vueRokkaImage',
       exports: 'named',
-      globals: { 'vue-runtime-helpers': 'vueRuntimeHelpers' },
       sourcemap: true
     },
     { file: 'dist/index.esm.js', format: 'es' },
