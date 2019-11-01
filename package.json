@@ -14,9 +14,10 @@
     "/src/*"
   ],
   "module": "dist/index.esm.js",
-  "main": "dist/index.esm.min.js",
-  "unpkg": "dist/index.iife.min.js",
-  "jsdelivr": "dist/index.iife.min.js",
+  "esnext": "src/index.js",
+  "main": "dist/index.umd.min.js",
+  "unpkg": "dist/index.umd.min.js",
+  "jsdelivr": "dist/index.umd.min.js",
   "author": "rokka.io",
   "license": "MIT",
   "engines": {
