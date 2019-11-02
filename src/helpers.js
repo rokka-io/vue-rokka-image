@@ -1,4 +1,7 @@
 export const sanitizedFilename = fileName => {
+  if (!fileName) {
+    return "image"
+  }
   let newFileName = fileName
   // remove old file endings
   newFileName = newFileName.replace(/\.[^/.]{2,4}$/, '')
