@@ -1,6 +1,6 @@
 export const sanitizedFilename = fileName => {
   if (!fileName) {
-    return "image"
+    return 'image'
   }
   let newFileName = fileName
   // remove old file endings
@@ -81,15 +81,27 @@ export const flattenObject = obj => {
 
 export const rokkaUrl = props => {
   const {
-    org,
+    organization,
+    org: oldOrg, // for BC reasons
     stack,
     operations,
     variables,
     options,
-    filename,
+    filename: _filename,
+    name, // so that a sourceimage object can be used, it's the same as filename
     format,
     hash,
   } = props
+
+  let org = organization
+  if (!org && oldOrg) {
+    org = oldOrg
+  }
+
+  let filename = _filename
+  if (!filename && name) {
+    filename = name
+  }
 
   let operationsStr = null
   if (operations && operations.length) {
@@ -121,12 +133,12 @@ export const rokkaUrl = props => {
     }
   }
   const url = [
-    `${org}.rokka.io/${stack}`,
+    `${org}.rokka.io/${stack || 'dynamic'}`,
     operationsStr,
     variablesStr,
     optionsStr,
     hash,
-    `${sanitizedFilename(filename)}.${format}`,
+    `${sanitizedFilename(filename)}.${format || 'jpg'}`,
   ]
     .join('/')
     .replace(/\/{2,}/g, '/')
