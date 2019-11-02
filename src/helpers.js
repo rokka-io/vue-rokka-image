@@ -103,7 +103,7 @@ export const rokkaUrl = _props => {
     name, // so that a sourceimage object can be used, it's the same as filename, filename has precedence
     format,
     hash,
-    sourceimage
+    short_hash,
   } = props
 
   let org = organization
@@ -153,7 +153,7 @@ export const rokkaUrl = _props => {
     operationsStr,
     variablesStr,
     optionsStr,
-    hash,
+    short_hash || hash, //use short_hash if given
     `${sanitizedFilename(filename)}.${format || 'jpg'}`,
   ]
     .join('/')
