@@ -17,7 +17,8 @@ export const generalProps = {
   stack: { type: String, default: 'dynamic' },
   hash: { type: String, default: '' },
   format: { type: String, default: 'jpg' },
-  filename: { type: String, default: 'image' },
+  filename: { type: String, default: '' },
+  sourceimage: { type: Object, default: () => {} },
   srcAttribute: { type: String, default: 'src' },
   srcsetAttribute: { type: String, default: 'srcset' },
   postfix: {
@@ -79,7 +80,18 @@ export const flattenObject = obj => {
   return toReturn
 }
 
-export const rokkaUrl = props => {
+export const rokkaUrl = _props => {
+  let props = _props
+  // merge sourceimage properties into prop, in case that's given.
+  // Useful for less code, when one gets sourceimage objects from rokka.js
+  if (props.sourceimage) {
+    for (const key of Object.keys(props.sourceimage)) {
+      if (!props[key]) {
+        props[key] = props.sourceimage[key]
+      }
+    }
+    delete props.sourceimage
+  }
   const {
     organization,
     org: oldOrg, // for BC reasons
@@ -88,9 +100,10 @@ export const rokkaUrl = props => {
     variables,
     options,
     filename: _filename,
-    name, // so that a sourceimage object can be used, it's the same as filename
+    name, // so that a sourceimage object can be used, it's the same as filename, filename has precedence
     format,
     hash,
+    sourceimage
   } = props
 
   let org = organization
@@ -101,6 +114,9 @@ export const rokkaUrl = props => {
   let filename = _filename
   if (!filename && name) {
     filename = name
+  }
+  if (!filename) {
+    filename = 'image'
   }
 
   let operationsStr = null
