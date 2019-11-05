@@ -13,7 +13,7 @@ export const sanitizedFilename = fileName => {
 export const generalProps = {
   alt: { type: String, default: null },
   title: { type: String, default: null },
-  org: { type: String, default: '' },
+  org: { type: String, default: null },
   stack: { type: String, default: 'dynamic' },
   hash: { type: String, default: '' },
   format: { type: String, default: 'jpg' },
@@ -175,15 +175,6 @@ export const rokkaUrl = _props => {
   return 'https://' + url
 }
 
-/**
- * Simple object check.
- * @param item
- * @returns {boolean}
- */
-export const isObject = item => {
-  return item && typeof item === 'object' && !Array.isArray(item)
-}
-
 export const srcset = item => {
   const currentPostfix = item.$props.postfix
 
@@ -285,6 +276,7 @@ export const getParent = item => {
   return parent
 }
 
+// maybe there's an easier way for this.
 export const removeDefaultPropsProperties = currentProps => {
   const keys = Object.keys(currentProps).filter(key => {
     if (generalProps[key]) {
