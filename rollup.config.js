@@ -2,24 +2,28 @@ import vue from 'rollup-plugin-vue'
 import { terser } from 'rollup-plugin-terser'
 import resolve from 'rollup-plugin-node-resolve'
 
-export default {
-  input: 'src/index.js',
-  output: [
-    {
+export default [
+  {
+    input: 'src/index.js',
+    output: {
       file: 'dist/index.umd.min.js',
       format: 'umd',
       name: 'vueRokkaImage',
       exports: 'named',
       sourcemap: true,
     },
-    { file: 'dist/index.esm.js', format: 'es' },
-  ],
-  plugins: [
-    vue(),
-    terser({
-      include: [/^.+\.min\.js$/],
-      sourcemap: true,
-    }),
-    resolve(),
-  ],
-}
+    plugins: [
+      vue(),
+      terser({
+        include: [/^.+\.min\.js$/],
+        sourcemap: true,
+      }),
+      resolve(),
+    ],
+  },
+  {
+    input: 'src/index.js',
+    output: { file: 'dist/index.esm.js', format: 'es' },
+    plugins: [vue(), resolve()],
+  },
+]
