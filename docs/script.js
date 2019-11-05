@@ -1,9 +1,9 @@
-RokkaImage.default.install(Vue)
-let { RokkaImg, RokkaPicture, RokkaSource, rokkaUrl } = RokkaImage
+vueRokkaImage.default.install(Vue)
+let { RokkaImg, RokkaPicture, RokkaSource, rokkaUrl } = vueRokkaImage
 
 new Vue({
   el: '#rokka',
   data: {
-    hash: 'ec2481db278b8180edf6638768e27e4aa6334ae7',
+    hash: '7ac62a87a598f103eb782e71844c36210c025ce3',
   },
 })

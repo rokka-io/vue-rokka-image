@@ -14,7 +14,7 @@
       <rokka-img
         alt="alt"
         title="Title"
-        org="playground"
+        org="gallery-demo"
         stack="dynamic"
         :hash="hash"
         format="jpg"
@@ -28,14 +28,14 @@
           { name: 'crop', expressions: { width: '$width', height: '$height' } }
         ]"
         :variables="{ width: 200, height: 200 }"
-      />
+      ></rokka-img>
 
       <h2>Complex example</h2>
 
       <rokka-picture
         alt="alt"
         title="Title"
-        org="playground"
+        org="gallery-demo"
         stack="dynamic"
         :hash="hash"
         format="jpg"
@@ -65,8 +65,8 @@
               dpr: '2'
             }
           ]"
-        />
-        <rokka-img />
+        ></rokka-source>
+        <rokka-img ></rokka-img>
       </rokka-picture>
 
     </div>

@@ -7,7 +7,7 @@ export const sanitizedFilename = fileName => {
   newFileName = newFileName.replace(/\.[^/.]{2,4}$/, '')
   // according to the rokka team only point and slash are not allowed
   newFileName = newFileName.replace(/[.\\/]/g, '-')
-  return newFileName
+  return encodeURIComponent(newFileName)
 }
 
 export const generalProps = {
@@ -123,6 +123,17 @@ export const rokkaUrl = _props => {
   if (operations && operations.length) {
     operationsStr = operations
       .map(operation => {
+        if (operation.expressions) {
+          if (!operation.options) {
+            operation.options = {}
+          }
+          Object.keys(operation.expressions).forEach(
+            key =>
+              (operation.options[key] = encodeURIComponent(
+                '[' + operation.expressions[key] + ']'
+              ))
+          )
+        }
         if (operation.options) {
           const operationOptions = flattenObject(operation.options).join('-')
           if (operationOptions) {
@@ -175,8 +186,8 @@ export const isObject = item => {
 
 /**
  * Deep merge two objects.
- * @param target
- * @param ...sources
+ * @param targetIn
+ * @param ...sourcesIn
  */
 export const mergeDeep = (targetIn, ...sourcesIn) => {
   if (!sourcesIn.length) return targetIn
@@ -300,7 +311,7 @@ export const srcset = item => {
       options,
     })
 
-    url = encodeURI(url) + (postfix ? ' ' + postfix : '')
+    url = url + (postfix ? ' ' + postfix : '')
 
     srcset.push(url)
   }
