@@ -1,10 +1,10 @@
 import { rokkaUrl } from '../src/helpers'
 const defaultProperties = {
-  org: 'org',
+  organization: 'org',
   hash: '1234',
 }
 
-const preUrl = `https://${defaultProperties.org}.rokka.io`
+const preUrl = `https://${defaultProperties.organization}.rokka.io`
 const postUrlDefault = `/${defaultProperties.hash}/image.jpg`
 
 const testUrl = (properties, urlPart, postUrl = postUrlDefault) => {

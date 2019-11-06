@@ -12,18 +12,18 @@ Object.keys(generalProps).forEach(key => {
 
 const defaultProperties = {
   ...generalDefaults,
-  org: 'testorg',
+  organization: 'testorg',
   hash: '1234',
 }
 
-const preUrl = `https://${defaultProperties.org}.rokka.io`
+const preUrl = `https://${defaultProperties.organization}.rokka.io`
 const postUrlDefault = `/${defaultProperties.hash}/image.jpg`
 
 const testUrl = (properties, urlPart, postUrl = postUrlDefault) => {
   expect(src(properties)).toBe(`${preUrl}${urlPart}${postUrl}`)
 }
 test('default properties', () => {
-  testUrl({ $props: defaultProperties, $parent: {} }, "/dynamic")
+  testUrl({ $props: defaultProperties, $parent: {} }, '/dynamic')
 })
 
 test('default with dpr', () => {
@@ -59,16 +59,41 @@ test('default with dpr and operations,variables,options', () => {
       $props: {
         ...defaultProperties,
         options: { dpr: 1 },
-        operations: [{ name: 'resize', options: { width: 200 }}, {name: 'crop', expressions: {width: '$width}'} }],
-        variables: {width: 200}
+        operations: [
+          { name: 'resize', options: { width: 200 } },
+          { name: 'crop', expressions: { width: '$width}' } },
+          { name: 'grayscale' },
+        ],
+        variables: { width: 200 },
       },
       $parent: {},
     },
-    '/dynamic/resize-width-200--crop-width-%5B%24width%7D%5D/v-width-200/o-dpr-1'
+    '/dynamic/resize-width-200--crop-width-%5B%24width%7D%5D--grayscale/v-width-200/o-dpr-1'
   )
 })
 
 /** parent stuff **/
+
+test(' overwrite filename  and format from parent', () => {
+  testUrl(
+    {
+      $parent: {
+        $data: { isRokkaPictureTag: true },
+        $props: {
+          ...defaultProperties,
+          operations: [{ name: 'resize', options: { width: 200 } }],
+        },
+      },
+      $props: {
+        ...generalDefaults,
+        filename: 'hello',
+        format: 'png',
+      },
+    },
+    ['/dynamic/resize-width-200'],
+    '/1234/hello.png'
+  )
+})
 
 test(' operations from parent', () => {
   testUrl(
@@ -81,7 +106,7 @@ test(' operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
       },
     },
     ['/dynamic/resize-width-200']
@@ -103,7 +128,7 @@ test(' overwrite operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         operations: [{ name: 'resize', options: { width: 300 } }],
       },
     },
@@ -123,7 +148,7 @@ test(' variables from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
       },
     },
     '/dynamic/resize-width-200/v-width-100'
@@ -142,7 +167,7 @@ test(' overwrite variables from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         variables: { width: 200, height: 300 },
       },
     },
@@ -165,7 +190,7 @@ test('postfix 1x, 2x and different operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         operations: [{ name: 'resize', options: { width: 300 } }],
       },
     },
@@ -186,7 +211,7 @@ test('postfix 1x 2x overwrite options', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         options: [{}, { dpr: 2 }],
       },
     },
@@ -210,7 +235,7 @@ test('postfix 1x, 2x in parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
       },
     },
     '/dynamic/resize-width-200/o-af-true'

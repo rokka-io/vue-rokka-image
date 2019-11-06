@@ -12,11 +12,11 @@ Object.keys(generalProps).forEach(key => {
 
 const defaultProperties = {
   ...generalDefaults,
-  org: 'org',
+  organization: 'org',
   hash: '1234',
 }
 
-const preUrl = `https://${defaultProperties.org}.rokka.io`
+const preUrl = `https://${defaultProperties.organization}.rokka.io`
 const postUrlDefault = `/${defaultProperties.hash}/image.jpg`
 
 const testUrl = (properties, urlPart, postfix, postUrl = postUrlDefault) => {
@@ -28,6 +28,12 @@ const testUrl = (properties, urlPart, postfix, postUrl = postUrlDefault) => {
 }
 test('default properties', () => {
   expect(srcset({ $props: defaultProperties, $parent: {} })).toBe(null)
+})
+
+test('default properties with zero length postfix', () => {
+  expect(
+    srcset({ $props: { ...defaultProperties, postfix: [] }, $parent: {} })
+  ).toBe(null)
 })
 
 test('default postfix 1x', () => {
@@ -108,13 +114,14 @@ test('postfix 1x from parent', () => {
   testUrl(
     {
       $parent: {
+        $data: { isRokkaPictureTag: true },
         $props: {
           ...defaultProperties,
           postfix: ['1x'],
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         operations: [{ name: 'resize', options: { width: 200 } }],
       },
     },
@@ -135,7 +142,7 @@ test('postfix 1x and operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
       },
     },
     ['/dynamic/resize-width-200'],
@@ -156,7 +163,7 @@ test('postfix 1x, 2x and operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
       },
     },
     [
@@ -183,7 +190,7 @@ test('postfix 1x, 2x and different operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
       },
     },
     [
@@ -210,7 +217,7 @@ test('postfix 1x, 2x and overwrite operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         operations: [{ name: 'resize', options: { width: 300 } }],
       },
     },
@@ -238,7 +245,7 @@ test('postfix 1x, 2x and different operations from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         operations: [
           [{ name: 'resize', options: { width: 300 } }],
           [{ name: 'resize', options: { width: 600 } }],
@@ -269,7 +276,7 @@ test('postfix 1x, 2x and different one operation from parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         operations: [[{ name: 'resize', options: { width: 300 } }]],
       },
     },
@@ -287,11 +294,11 @@ test('postfix 1x, 2x and overwrite both operations at once with single array fro
           ...defaultProperties,
           postfix: ['1x', '2x'],
           operations: [{ name: 'resize', options: { width: 200 } }],
-          options: [{ af: true }, { af: true, dpr:2 }],
+          options: [{ af: true }, { af: true, dpr: 2 }],
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         operations: [{ name: 'resize', options: { width: 300 } }],
       },
     },
@@ -316,7 +323,7 @@ test('postfix 1x 2x overwrite options', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         options: [{}, { dpr: 2 }],
       },
     },
@@ -338,7 +345,7 @@ test('postfix 1x 2x overwrite options with just one option in parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         options: [{}, { dpr: 2 }],
       },
     },
@@ -361,7 +368,7 @@ test('postfix 1x 2x variales  with just one variable in parent', () => {
         },
       },
       $props: {
-        ...defaultProperties,
+        ...generalDefaults,
         variables: [{ width: 300 }, { width: 200, height: 100 }],
       },
     },

@@ -13,7 +13,7 @@ export const sanitizedFilename = fileName => {
 export const generalProps = {
   alt: { type: String, default: null },
   title: { type: String, default: null },
-  org: { type: String, default: null },
+  organization: { type: String, default: null },
   stack: { type: String, default: 'dynamic' },
   hash: { type: String, default: '' },
   format: { type: String, default: 'jpg' },
@@ -61,23 +61,7 @@ export const flattenObject = obj => {
     return ''
   }
   Object.keys(obj).forEach(key => {
-    const val = obj[key]
-
-    // for objects we should do a recursion
-    if (typeof val === 'object') {
-      const flatObject = flattenObject(val)
-      for (const x in flatObject) {
-        if (!Object.prototype.hasOwnProperty.call(flatObject, x)) continue
-        // are we itteration over a array or object
-        if (Array.isArray(flatObject)) {
-          toReturn.push(`${key}-${flatObject[x]}`)
-        } else {
-          toReturn.push(`${key}-${x}-${flatObject[x]}`)
-        }
-      }
-    } else {
-      toReturn.push(`${key}-${val}`)
-    }
+    toReturn.push(`${key}-${obj[key]}`)
   })
   return toReturn
 }
@@ -87,6 +71,11 @@ export const rokkaUrl = _props => {
   // merge sourceimage properties into prop, in case that's given.
   // Useful for less code, when one gets sourceimage objects from rokka.js
   if (props.sourceimage) {
+    // if hash is set not from source image and short_hash isn't
+    // set hash to short_hash so that it isn't overwritten by sourceimage
+    if (props.hash && !props.short_hash) {
+      props.short_hash = props.hash
+    }
     for (const key of Object.keys(props.sourceimage)) {
       if (!props[key]) {
         props[key] = props.sourceimage[key]
@@ -96,7 +85,6 @@ export const rokkaUrl = _props => {
   }
   const {
     organization,
-    org: oldOrg, // for BC reasons
     stack,
     operations,
     variables,
@@ -107,11 +95,6 @@ export const rokkaUrl = _props => {
     hash,
     short_hash,
   } = props
-
-  let org = organization
-  if (!org && oldOrg) {
-    org = oldOrg
-  }
 
   let filename = _filename
   if (!filename && name) {
@@ -162,7 +145,7 @@ export const rokkaUrl = _props => {
     }
   }
   const url = [
-    `${org}.rokka.io/${stack || 'dynamic'}`,
+    `${organization}.rokka.io/${stack || 'dynamic'}`,
     operationsStr,
     variablesStr,
     optionsStr,
@@ -250,7 +233,7 @@ export const src = (item, index = 0, parentIn = null) => {
           : parentVariables
     }
     //we have the default props already from the parentoperations in this case, so just use the added ones
-    currentProps = removeDefaultPropsProperties(item.$props)
+    currentProps = removeFalsyProperties(item.$props)
   }
   return rokkaUrl({
     ...parent.$props,
@@ -275,22 +258,14 @@ export const getParent = item => {
   }
   return parent
 }
-
 // maybe there's an easier way for this.
-export const removeDefaultPropsProperties = currentProps => {
+export const removeFalsyProperties = currentProps => {
   const keys = Object.keys(currentProps).filter(key => {
-    if (generalProps[key]) {
-      if (generalProps[key].default instanceof Function) {
-        return currentProps[key] !== generalProps[key].default()
-      }
-      return currentProps[key] !== generalProps[key].default
-    }
-    return true
+    return currentProps[key]
   })
-
-  const nonDefault = {}
+  const props = {}
   keys.forEach(key => {
-    nonDefault[key] = currentProps[key]
+    props[key] = currentProps[key]
   })
-  return nonDefault
+  return props
 }

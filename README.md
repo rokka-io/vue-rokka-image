@@ -26,7 +26,7 @@ npm i vue-rokka-image
 <rokka-img
   alt="alt"
   title="Title"
-  org="playground"
+  organization="playground"
   stack="dynamic"
   hash="HASH"
   format="jpg"
@@ -54,7 +54,7 @@ This produces two sources because there is an array in `optons` and `postfix`.
 <rokka-picture
   alt="alt"
   title="Title"
-  org="playground"
+  organization="playground"
   stack="dynamic"
   hash="HASH"
   format="jpg"

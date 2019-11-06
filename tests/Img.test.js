@@ -4,7 +4,7 @@ import Img from '../src/Img'
 // Now mount the component and you have the wrapper
 let wrapper = mount(Img, {
   propsData: {
-    org: 'testorg',
+    organization: 'testorg',
     hash: '1234',
   },
 })
@@ -67,7 +67,7 @@ describe('Component', () => {
 describe('Component srcAttribute', () => {
   const wrapperSrcAttribute = mount(Img, {
     propsData: {
-      org: 'testorg',
+      organization: 'testorg',
       hash: '1234',
     },
   })
