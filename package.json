@@ -8,7 +8,9 @@
     "watch": "rollup -c -w",
     "lint": "eslint 'src/*' 'tests/*'  --ignore-pattern='tests/__snapshots__'",
     "fix": "eslint 'src/*' 'tests/*' --ignore-pattern='tests/__snapshots__' --fix",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "coveralls": "npm run test -- --coverage --coverageReporters=text-lcov | coveralls"
   },
   "files": [
     "/dist/*",
@@ -25,6 +27,7 @@
     "node": "^10"
   },
   "devDependencies": {
+    "coveralls": "^3.0.7",
     "@babel/core": "^7.7.0",
     "@babel/preset-env": "^7.7.0",
     "@vue/test-utils": "^1.0.0-beta.29",
@@ -44,10 +47,5 @@
     "vue": "^2.6.10",
     "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.10"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
-    }
   }
 }

@@ -4,6 +4,7 @@
 [![travis](https://badgen.net/travis/rokka-io/vue-rokka-image/beta)](https://travis-ci.org/rokka-io/vue-rokka-image)
 [![bundlephobia zipped](https://badgen.net/bundlephobia/min/vue-rokka-image)](https://bundlephobia.com/result?p=vue-rokka-image)
 [![bundlephobia minified](https://badgen.net/bundlephobia/minzip/vue-rokka-image)](https://bundlephobia.com/result?p=vue-rokka-image)
+[![coveralls](https://badgen.net/coveralls/c/github/rokka-io/vue-rokka-image)](https://coveralls.io/github/rokka-io/vue-rokka-image)
 
 
 [Vue 2.x](https://vuejs.org/) component for the image processing service [rokka.io](https://rokka.io/)
