@@ -11,9 +11,12 @@ let wrapper = mount(Img, {
 
 describe('Component', () => {
   test('is a Vue instance', () => {
-    const wrapper = mount(Img)
     expect(wrapper.isVueInstance()).toBeTruthy()
   })
+  test('renders correctly', () => {
+    expect(wrapper.element).toMatchSnapshot()
+  })
+
   it('renders the correct markup', () => {
     expect(wrapper.html()).toContain(
       '<img src="https://testorg.rokka.io/dynamic/1234/image.jpg" ' +

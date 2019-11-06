@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component renders correctly 1`] = `
+<img
+  class="rokka--attr-src"
+  src="https://testorg.rokka.io/dynamic/1234/image.jpg"
+/>
+`;
