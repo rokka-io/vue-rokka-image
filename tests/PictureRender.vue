@@ -14,7 +14,7 @@
     ></rokka-source>
     <rokka-source media="all"></rokka-source>
 
-    <rokka-img></rokka-img>
+    <rokka-img alt="foo"></rokka-img>
   </rokka-picture>
 </template>
 

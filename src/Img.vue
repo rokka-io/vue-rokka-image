@@ -3,8 +3,8 @@
     :[srcAttribute]="rokkaSrc"
     :[srcsetAttribute]="rokkaSrcset"
     :[srcAdditionalAttribute]="srcAdditionalComputed"
-    :alt="alt"
-    :title="title"
+    :alt="alt || ($parent.isRokkaPictureTag && $parent.alt)"
+    :title="title  || ($parent.isRokkaPictureTag && $parent.title)"
     :class="'rokka--attr-' + srcAttribute"
   />
 </template>
