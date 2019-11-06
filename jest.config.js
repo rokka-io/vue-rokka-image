@@ -68,9 +68,11 @@ module.exports = {
   //   "node_modules"
   // ],
 
-  // An array of file extensions your modules use
-  // moduleFileExtensions: [
-  //   "js",
+   //An array of file extensions your modules use
+   moduleFileExtensions: [
+     "js",
+     "vue",
+   ],
   //   "json",
   //   "jsx",
   //   "ts",
@@ -132,7 +134,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -168,6 +170,12 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   // transform: null,
+  "transform": {
+    // process `*.vue` files with `vue-jest`
+    ".*\\.(vue)$": "vue-jest",
+    "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

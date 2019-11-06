@@ -27,6 +27,8 @@
   "devDependencies": {
     "@babel/core": "^7.7.0",
     "@babel/preset-env": "^7.7.0",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "eslint": "^5.16.0",
@@ -39,9 +41,12 @@
     "rollup-plugin-terser": "^5.1.2",
     "rollup-plugin-vue": "^5.1.2",
     "vue": "^2.6.10",
+    "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.10"
   },
-  "dependencies": {
-    "rollup-plugin-commonjs": "^10.1.0"
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    }
   }
 }
