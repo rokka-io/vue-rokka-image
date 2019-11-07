@@ -4,7 +4,7 @@
     :[srcsetAttribute]="rokkaSrcset"
     :[srcAdditionalAttribute]="srcAdditionalComputed"
     :alt="alt || ($parent.isRokkaPictureTag && $parent.alt)"
-    :title="title  || ($parent.isRokkaPictureTag && $parent.title)"
+    :title="title || ($parent.isRokkaPictureTag && $parent.title)"
     :class="'rokka--attr-' + srcAttribute"
   />
 </template>
