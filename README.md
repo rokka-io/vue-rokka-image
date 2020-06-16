@@ -21,6 +21,13 @@ If you need a lazy version use [`vue-rokka-image-lazy`](https://github.com/rokka
 npm i vue-rokka-image
 ```
 
+### Install the plugin
+```js
+import Rokka from 'vue-rokka-image'
+
+Vue.use(Rokka)
+```
+
 ## simple use
 
 ```vue
